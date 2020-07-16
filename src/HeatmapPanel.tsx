@@ -77,18 +77,18 @@ export const HeatmapContainer: React.FC<HeatmapContainerProps> = ({
   // numeric field in the data frame.
   const fieldConfig = frame.fields.find(field => field.type === 'number')?.config.custom;
   const colorPalette = fieldConfig.colorPalette;
+  const invertPalette = fieldConfig.invertPalette; 
   const colorSpace = fieldConfig.colorSpace;
   const thresholds: ThresholdsConfig = fieldConfig.thresholds ?? {
     mode: ThresholdsMode.Percentage,
     steps: [],
   };
-  const inverseColorPalette = fieldConfig.inverseColorPalette; 
 
   // Create the scale we'll be using to map values to colors.
   let scale =
     colorPalette === 'custom'
       ? makeCustomColorScale(colorSpace, bucketData.min, bucketData.max, thresholds)
-      : makeSpectrumColorScale(colorPalette, bucketData.min, bucketData.max, inverseColorPalette);
+      : makeSpectrumColorScale(colorPalette, bucketData.min, bucketData.max, invertPalette);
 
   // Calculate dimensions for the legend.
   const legendPadding = { top: 10, left: 35, bottom: 0, right: 10 };
