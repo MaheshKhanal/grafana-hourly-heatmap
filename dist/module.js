@@ -8020,9 +8020,9 @@ var interpolators = {
 
 var makeSpectrumColorScale = function makeSpectrumColorScale(palette, min, max, invertPalette) {
   if (invertPalette) {
-    return d3__WEBPACK_IMPORTED_MODULE_0__["scaleSequential"](interpolators[palette]).domain([min, max]);
-  } else {
     return d3__WEBPACK_IMPORTED_MODULE_0__["scaleSequential"](interpolators[palette]).domain([max, min]);
+  } else {
+    return d3__WEBPACK_IMPORTED_MODULE_0__["scaleSequential"](interpolators[palette]).domain([min, max]);
   }
 };
 var interpolationMap = {
@@ -8520,6 +8520,12 @@ var paletteSelected = function paletteSelected(colorPalette) {
   };
 };
 
+var paletteNotSelected = function paletteNotSelected(colorPalette) {
+  return function (config) {
+    return config.colorPalette != colorPalette;
+  };
+};
+
 var plugin = new _grafana_data__WEBPACK_IMPORTED_MODULE_1__["PanelPlugin"](_HeatmapPanel__WEBPACK_IMPORTED_MODULE_2__["HeatmapPanel"]).useFieldConfig({
   useCustomConfig: function useCustomConfig(builder) {
     builder.addSelect({
@@ -8578,8 +8584,9 @@ var plugin = new _grafana_data__WEBPACK_IMPORTED_MODULE_1__["PanelPlugin"](_Heat
       defaultValue: 'interpolateSpectral'
     }).addBooleanSwitch({
       path: 'invertPalette',
-      name: 'Invert Color Palette',
-      defaultValue: false
+      name: 'Invert color palette',
+      defaultValue: false,
+      showIf: paletteNotSelected('custom')
     }).addSelect({
       path: 'colorSpace',
       name: 'Color space',
